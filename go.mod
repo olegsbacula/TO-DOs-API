@@ -4,7 +4,9 @@ go 1.24.3
 
 require (
 	azugo.io/azugo v0.23.1
+	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.9.1
+	github.com/valyala/fasthttp v1.62.0
 )
 
 require (
@@ -51,7 +53,6 @@ require (
 	github.com/spf13/viper v1.20.1 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.62.0 // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
 	go.elastic.co/ecszap v1.0.3 // indirect
 	go.uber.org/multierr v1.11.0 // indirect

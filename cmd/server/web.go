@@ -29,10 +29,18 @@ func runWeb(cmd *cobra.Command, args []string) error {
     ctx.Text("Hello, World!")
   })
 
-  app.Post("/gettodo/{taskID}", func (ctx *azugo.Context) {
+  app.Get("/gettodo/{taskID}", func (ctx *azugo.Context) {
     routes.GetInfobyID(ctx)
   })
 
+  app.Get("/listall", func (ctx *azugo.Context) {
+    routes.GetAllTodos(ctx)
+  })
+
+  app.Post("/posttodo", func (ctx *azugo.Context) {
+    routes.AddATodo(ctx)
+  })
+ 
   server.Run(app)
   return nil
 }
