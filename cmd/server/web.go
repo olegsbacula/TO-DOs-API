@@ -3,7 +3,9 @@ package main
 import (
   "azugo.io/azugo"
   "azugo.io/azugo/server"
+  "os"
   "todosAPI/routes"
+  "azugo.io/azugo/middleware"
   "github.com/spf13/cobra"
 )
 
@@ -40,6 +42,14 @@ func runWeb(cmd *cobra.Command, args []string) error {
   app.Post("/posttodo", func (ctx *azugo.Context) {
     routes.AddATodo(ctx)
   })
+
+  corsOpts := app.RouterOptions().CORS
+corsOpts.
+	SetOrigins(os.Getenv("CORS_ORIGINS")).
+	SetMethods("GET", "POST", "OPTIONS").
+	SetHeaders("Content-Type")
+
+app.Use(middleware.CORS(&corsOpts))
  
   server.Run(app)
   return nil

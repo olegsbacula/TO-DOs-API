@@ -9,23 +9,29 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func GetInfobyID(ctx *azugo.Context){
+// func enableCors(ctx *azugo.Context) {
+// 	ctx.Response().Header.
+// 	ctx.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+// 	ctx.Response.Header.Set("Access-Control-Allow-Headers", "Content-Type")
+// }
+
+func GetInfobyID(ctx *azugo.Context) {
 	var found bool
 	var response models.TODO
 	taskID := ctx.Params.String("taskID")
 	found = false
-	for _, u := range testdata.TODOS.TODOs{
-		if u.TaskID == taskID{
+	for _, u := range testdata.TODOS.TODOs {
+		if u.TaskID == taskID {
 			response = models.TODO{
-				UserId: u.UserId,
-				TaskID:u.TaskID,
-				Title: u.Title,
+				UserId:    u.UserId,
+				TaskID:    u.TaskID,
+				Title:     u.Title,
 				Completed: u.Completed,
 			}
 			found = true
 		}
 	}
-	if (found){
+	if found {
 		ctx.StatusCode(fasthttp.StatusOK)
 		ctx.ContentType("application/json")
 		ctx.JSON(response)
@@ -36,33 +42,31 @@ func GetInfobyID(ctx *azugo.Context){
 	ctx.Context().SetBodyString("Didn't find any requested by ID todos.")
 }
 
-
 func GetAllTodos(ctx *azugo.Context) {
-  ctx.StatusCode(fasthttp.StatusOK)
-  ctx.ContentType("application/json")
-  ctx.JSON(testdata.TODOS.TODOs)
+	ctx.StatusCode(fasthttp.StatusOK)
+	ctx.ContentType("application/json")
+	ctx.JSON(testdata.TODOS.TODOs)
 }
 
-func AddATodo(ctx *azugo.Context){
+func AddATodo(ctx *azugo.Context) {
 	var response models.TODO
-	 err := json.Unmarshal(ctx.Body.Bytes(),&response) 
-	 if err != nil{
+	err := json.Unmarshal(ctx.Body.Bytes(), &response)
+	if err != nil {
 		ctx.StatusCode(fasthttp.StatusBadRequest)
 		ctx.ContentType("text/plain")
 		ctx.Context().SetBodyString("Error while parsing your JSON")
 		return
-	 }
-	 for _, u := range testdata.TODOS.TODOs{
-		if u.TaskID == response.TaskID{
-				ctx.StatusCode(fasthttp.StatusBadRequest)
-				ctx.ContentType("text/plain")
-				ctx.Context().SetBodyString("Do not enter tasks with the same id's")
-				return
-			}
+	}
+	for _, u := range testdata.TODOS.TODOs {
+		if u.TaskID == response.TaskID {
+			ctx.StatusCode(fasthttp.StatusBadRequest)
+			ctx.ContentType("text/plain")
+			ctx.Context().SetBodyString("Do not enter tasks with the same id's")
+			return
 		}
-		
-	testdata.TODOS.TODOs=append(testdata.TODOS.TODOs,response)
+	}
+
+	testdata.TODOS.TODOs = append(testdata.TODOS.TODOs, response)
 	ctx.StatusCode(fasthttp.StatusOK)
-	ctx.ContentType("application/json")
 	ctx.JSON(response)
 }
