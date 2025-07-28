@@ -126,6 +126,5 @@ func EditAToDo(ctx *azugo.Context) {
 	testdata.TODOS.TODOs = updated
 
 	ctx.StatusCode(fasthttp.StatusOK)
-	ctx.ContentType("text/plain")
-	ctx.Context().SetBodyString("Task updated in memory")
+	ctx.JSON(response)
 }
