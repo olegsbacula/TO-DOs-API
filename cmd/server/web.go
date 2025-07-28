@@ -43,10 +43,17 @@ func runWeb(cmd *cobra.Command, args []string) error {
     routes.AddATodo(ctx)
   })
 
+  app.Delete("/deletetodo/{taskID}", func(ctx *azugo.Context) {
+	routes.DeleteToDo(ctx)
+})
+  app.Patch("/deletetodo/{taskID}", func(ctx *azugo.Context) {
+	routes.DeleteToDo(ctx)
+})
+
   corsOpts := app.RouterOptions().CORS
 corsOpts.
 	SetOrigins(os.Getenv("CORS_ORIGINS")).
-	SetMethods("GET", "POST", "OPTIONS").
+	SetMethods("GET", "POST", "OPTIONS","DELETE").
 	SetHeaders("Content-Type")
 
 app.Use(middleware.CORS(&corsOpts))
